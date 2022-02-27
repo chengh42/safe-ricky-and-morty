@@ -25,6 +25,12 @@
       "commands": [
         "femto"
       ]
+    },
+    "snowflaqe": {
+      "version": "1.35.0",
+      "commands": [
+        "snowflaqe"
+      ]
     }
   }
 }

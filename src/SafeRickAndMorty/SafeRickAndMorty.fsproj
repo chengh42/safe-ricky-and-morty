@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="SafeRickAndMorty.Types.fs" />
+    <Compile Include="SafeRickAndMorty.GetCharacters.fs" />
+    <Compile Include="SafeRickAndMorty.GraphqlClient.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="*.fs; *.js" Exclude="**/*.fs.js" PackagePath="fable/" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="4.7.2" />
+    <PackageReference Include="Fable.SimpleHttp" Version="3.0.0" />
+    <PackageReference Include="Fable.SimpleJson" Version="3.21.0" />
+  </ItemGroup>
+</Project>

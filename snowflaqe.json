@@ -1,0 +1,6 @@
+{
+    "schema": "https://rickandmortyapi.com/graphql",
+    "queries": "./queries",
+    "project": "SafeRickAndMorty",
+    "output": "./src/SafeRickAndMorty"
+}

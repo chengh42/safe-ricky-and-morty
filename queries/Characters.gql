@@ -1,0 +1,11 @@
+query GetCharacters($name: String!) {
+    characters(filter: { name: $name }) {
+        results {
+            name
+            image
+            id
+            species
+            status
+        }
+    }
+}
