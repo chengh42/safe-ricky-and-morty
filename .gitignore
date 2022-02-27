@@ -6,7 +6,7 @@
 .idea/
 .ionide/
 .vs/
-deploy/
+publish/
 obj/
 bin/
 output/

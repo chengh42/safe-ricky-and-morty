@@ -1,60 +1,26 @@
 open Fake.Core
 open Fake.IO
-open Farmer
-open Farmer.Builders
 
 open Helpers
 
 initializeContext()
 
-let sharedPath = Path.getFullName "src/Shared"
-let serverPath = Path.getFullName "src/Server"
-let clientPath = Path.getFullName "src/Client"
-let deployPath = Path.getFullName "deploy"
-let sharedTestsPath = Path.getFullName "tests/Shared"
-let serverTestsPath = Path.getFullName "tests/Server"
-let clientTestsPath = Path.getFullName "tests/Client"
+let appPath = Path.getFullName "src/App"
+let publishPath = Path.getFullName "publish"
 
 Target.create "Clean" (fun _ ->
-    Shell.cleanDir deployPath
-    run dotnet "fable clean --yes" clientPath // Delete *.fs.js files created by Fable
+    Shell.cleanDir publishPath
+    run dotnet "fable clean --yes" appPath // Delete *.fs.js files created by Fable
 )
 
 Target.create "InstallClient" (fun _ -> run npm "install" ".")
 
 Target.create "Bundle" (fun _ ->
-    [ "server", dotnet $"publish -c Release -o \"{deployPath}\"" serverPath
-      "client", dotnet "fable -o output -s --run webpack -p" clientPath ]
-    |> runParallel
-)
-
-Target.create "Azure" (fun _ ->
-    let web = webApp {
-        name "safe_ricky_and_morty"
-        zip_deploy "deploy"
-    }
-    let deployment = arm {
-        location Location.WestEurope
-        add_resource web
-    }
-
-    deployment
-    |> Deploy.execute "safe_ricky_and_morty" Deploy.NoParameters
-    |> ignore
+    run dotnet "fable -o output -s --run webpack -p" appPath
 )
 
 Target.create "Run" (fun _ ->
-    run dotnet "build" sharedPath
-    [ "server", dotnet "watch run" serverPath
-      "client", dotnet "fable watch -o output -s --run webpack-dev-server" clientPath ]
-    |> runParallel
-)
-
-Target.create "RunTests" (fun _ ->
-    run dotnet "build" sharedTestsPath
-    [ "server", dotnet "watch run" serverTestsPath
-      "client", dotnet "fable watch -o output -s --run webpack-dev-server --config ../../webpack.tests.config.js" clientTestsPath ]
-    |> runParallel
+    run dotnet "fable watch -o output -s --run webpack-dev-server" appPath
 )
 
 Target.create "Format" (fun _ ->
@@ -67,14 +33,10 @@ let dependencies = [
     "Clean"
         ==> "InstallClient"
         ==> "Bundle"
-        ==> "Azure"
 
     "Clean"
         ==> "InstallClient"
         ==> "Run"
-
-    "InstallClient"
-        ==> "RunTests"
 ]
 
 [<EntryPoint>]

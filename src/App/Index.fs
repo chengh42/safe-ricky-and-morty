@@ -2,7 +2,6 @@ module Index
 
 open Elmish
 open Fable.Remoting.Client
-open Shared
 open SafeRickAndMorty
 
 type AsyncOperationStatus<'t> =
