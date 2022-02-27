@@ -35,4 +35,4 @@ jobs:
       with:
         deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
         publish_branch: gh-pages
-        publish_dir: ./publish/app
+        publish_dir: ./publish
